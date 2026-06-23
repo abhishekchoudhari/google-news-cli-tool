@@ -1,0 +1,29 @@
+{
+  "name": "google-news-cli",
+  "version": "1.0.0",
+  "description": "A beautiful, interactive command-line tool to fetch and search the latest Google News.",
+  "type": "module",
+  "main": "bin/cli.js",
+  "bin": {
+    "google-news": "./bin/cli.js"
+  },
+  "scripts": {
+    "start": "node bin/cli.js"
+  },
+  "keywords": [
+    "google",
+    "news",
+    "cli",
+    "rss",
+    "feed"
+  ],
+  "author": "Antigravity",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^11.1.0",
+    "open": "^10.1.0",
+    "picocolors": "^1.0.0",
+    "prompts": "^2.4.2",
+    "rss-parser": "^3.13.0"
+  }
+}

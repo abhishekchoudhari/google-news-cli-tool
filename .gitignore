@@ -1,0 +1,13 @@
+# Dependency directories
+node_modules/
+google-new-cli-tool/node_modules/
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
