@@ -3,6 +3,16 @@ import pc from 'picocolors';
 import open from 'open';
 import { fetchTopStories, fetchTopic, fetchSearch, TOPICS } from './api.js';
 
+// Custom wrapper around prompts to handle Ctrl+C/Esc universally
+async function ask(questions) {
+  return prompts(questions, {
+    onCancel: () => {
+      console.log(pc.cyan('\nGoodbye! Thanks for using Google News CLI.'));
+      process.exit(0);
+    }
+  });
+}
+
 /**
  * Print a stylish banner to the console
  * @param {string} subtitle 
@@ -62,7 +72,7 @@ async function showArticleDetails(article) {
     console.log();
   }
 
-  const response = await prompts({
+  const response = await ask({
     type: 'select',
     name: 'action',
     message: 'What would you like to do?',
@@ -93,7 +103,7 @@ async function showArticleDetails(article) {
 async function browseArticlesList(articles, sourceName) {
   if (articles.length === 0) {
     console.log(pc.yellow('No articles found.'));
-    await prompts({
+    await ask({
       type: 'text',
       name: 'continue',
       message: 'Press Enter to return to Main Menu...'
@@ -115,7 +125,7 @@ async function browseArticlesList(articles, sourceName) {
       value: 'back'
     });
 
-    const response = await prompts({
+    const response = await ask({
       type: 'select',
       name: 'selection',
       message: 'Articles:',
@@ -159,7 +169,7 @@ async function browseCategories() {
       value: 'back'
     });
 
-    const response = await prompts({
+    const response = await ask({
       type: 'select',
       name: 'topicId',
       message: 'Select a Category:',
@@ -183,7 +193,7 @@ async function browseCategories() {
       }
     } catch (err) {
       console.log(pc.red(`Error: ${err.message}`));
-      await prompts({
+      await ask({
         type: 'text',
         name: 'continue',
         message: 'Press Enter to continue...'
@@ -199,7 +209,7 @@ async function searchNews() {
   console.clear();
   printHeader('Search Google News');
 
-  const response = await prompts({
+  const response = await ask({
     type: 'text',
     name: 'query',
     message: 'Enter search keywords:',
@@ -219,7 +229,7 @@ async function searchNews() {
     await browseArticlesList(articles, `Search: "${query}"`);
   } catch (err) {
     console.log(pc.red(`Error: ${err.message}`));
-    await prompts({
+    await ask({
       type: 'text',
       name: 'continue',
       message: 'Press Enter to continue...'
@@ -235,7 +245,7 @@ export async function startInteractiveUI() {
     console.clear();
     printHeader('Interactive Menu');
 
-    const response = await prompts({
+    const response = await ask({
       type: 'select',
       name: 'menuOption',
       message: 'What would you like to read today?',
@@ -250,7 +260,7 @@ export async function startInteractiveUI() {
 
     if (!response.menuOption || response.menuOption === 'exit') {
       console.log(pc.cyan('Goodbye! Thanks for using Google News CLI.'));
-      break;
+      process.exit(0);
     }
 
     if (response.menuOption === 'top') {
